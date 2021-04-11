@@ -1,0 +1,10 @@
+/mysite/mysite/.env
+/mysite/__pycache__/
+*.py[cod]
+.env
+/mysite/venv/
+
+
+# SQLite database files
+
+*.sqlite3
