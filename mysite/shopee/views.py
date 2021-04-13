@@ -6,7 +6,7 @@ from .models import Buyer
 from .serializers import BuyerSerializer
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-import datetime
+import hashlib
 
 
 class SnippetList(APIView):
@@ -43,18 +43,21 @@ class BuyerDetail(APIView):
     def get(self, request, pk, format=None):
         buyer = self.get_object(pk)
         serializer = BuyerSerializer(buyer)
-        if not (buyer.imei and buyer.serial and buyer.md5):
+        if not (buyer.imei and buyer.serial):
             return Response({"err": 1})
+
+        key = serializer.data['serial']+serializer.data['imei']
+        md5 = hashlib.md5(key.encode()).hexdigest()
 
         new_serializer = {'err': 0,
                           'current_ts': serializer.data['current_ts'],
                           'end_ts': serializer.data['end_ts'],
-                          'md5': serializer.data['md5']}
+                          'md5': md5}
         return Response(new_serializer)
 
     def post(self, request, pk, format=None):
         buyer = self.get_object(pk)
-        if buyer.imei and buyer.serial and buyer.md5:
+        if buyer.imei and buyer.serial:
             return Response({'err': 1})
 
         serializer = BuyerSerializer(buyer, data=request.data)

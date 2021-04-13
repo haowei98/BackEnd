@@ -14,7 +14,7 @@ class BuyerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Buyer
-        fields = ['id', 'current_ts', 'end_ts', 'serial', 'imei', 'md5']
+        fields = ['id', 'current_ts', 'end_ts', 'serial', 'imei']
 
     def get_timestamp(self, buyer):
         return int(datetime.datetime.now().timestamp())

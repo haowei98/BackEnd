@@ -8,3 +8,4 @@
 # SQLite database files
 
 *.sqlite3
+/password.txt
